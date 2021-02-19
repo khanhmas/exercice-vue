@@ -6,7 +6,13 @@
 
     <q-card-section>
       <div class="row q-mb-md">
-        <q-input filled v-model="dishe.name" label="Nom (Burger)" class="col" />
+        <q-input
+          filled
+          v-model="dishe.name"
+          label="Nom (Burger)"
+          class="col"
+          :rules="[val => val.length <= 20 || 'Please use maximum 20 characters']"
+        />
       </div>
 
       <div class="row q-mb-md">
@@ -16,6 +22,7 @@
           label="Description"
           type="textarea"
           class="col"
+          :rules="[val => val.length <= 135 || 'Please use maximum 135 characters']"
         />
       </div>
 
@@ -45,7 +52,7 @@
 
     <q-card-actions align="right">
       <q-btn label="Annuler" color="grey" v-close-popup />
-      <q-btn label="Sauver" color="primary" v-close-popup />
+      <q-btn label="Sauver" color="primary" @click="onSave()" v-close-popup />
     </q-card-actions>
   </q-card>
 </template>
@@ -62,6 +69,11 @@ export default {
         image: ""
       }
     };
+  },
+  methods: {
+    onSave() {
+      console.log('saving')
+    }
   }
 };
 </script>

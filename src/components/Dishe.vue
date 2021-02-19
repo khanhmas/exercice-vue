@@ -24,7 +24,7 @@
       <q-btn @click="showFormDishe = true" icon="edit" color="blue" flat
         >Modifier</q-btn
       >
-      <q-btn icon="delete" color="red" flat>Supprimer</q-btn>
+      <q-btn icon="delete" color="red" @click="onDelete()" flat>Supprimer</q-btn>
     </q-card-actions>
 
     <q-dialog v-model="showFormDishe">
@@ -43,6 +43,15 @@ export default {
   },
   components: {
     "form-dishe": require("components/FormDishe.vue").default
+  },
+  methods: {
+    onDelete() {
+      const deleteConfirm = confirm(`Do you want to delete the item ${this.dishe.nom}`);
+      if (deleteConfirm === true)
+        this.$store.dispatch('task/delete', {
+          id: this.dishe.id
+        });
+    }
   }
 };
 </script>

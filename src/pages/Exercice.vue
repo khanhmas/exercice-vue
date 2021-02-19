@@ -36,11 +36,11 @@ export default {
   computed: {
     // Method 1: use classic approach
     // dishes() {
-    //   return this.$store.getters['task/getDishes'];
+    //   return this.$store.getters['tasks/getDishes'];
     // }
     // Method 2: use mapGetters
     ...mapGetters({
-      dishes: "task/getDishes"
+      dishes: "tasks/getDishes"
     })
   },
   methods: {
@@ -58,7 +58,7 @@ export default {
 
     const items = getAllItems(CONF.LOCAL_STORAGE_KEY);
     if (items !== null) {
-      this.$store.dispatch("task/addAll", items);
+      this.$store.dispatch("tasks/addAll", items);
     }
   }
 };

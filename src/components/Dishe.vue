@@ -53,7 +53,7 @@ export default {
     onDelete() {
       const deleteConfirm = confirm(`Voulez-vous supprimer l'article "${this.dishe.name}" ?`);
       if (deleteConfirm === true)
-        this.$store.dispatch('task/delete', {
+        this.$store.dispatch('tasks/delete', {
           id: this.dishe.id
         });
     }

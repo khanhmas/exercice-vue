@@ -99,7 +99,7 @@ export default {
   methods: {
     onSave() {
       if (this.isValid() === true) {
-        const action = "task/" + this.action;
+        const action = "tasks/" + this.action;
         this.$store.dispatch(action, this.dishe);
       } else {
         alert(

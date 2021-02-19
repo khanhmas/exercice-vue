@@ -16,7 +16,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import initStore from "../store/index";
+import store from "../store/index";
 import dishes from "../store/dish/static/data.ts";
 import { addAllItems, getAllItems } from "../utils/localStorage.ts";
 import CONF from "../config/app.config.ts";
@@ -32,7 +32,7 @@ export default {
     "add-button": require("components/AddButton.vue").default,
     "form-dishe": require("components/FormDishe.vue").default
   },
-  store: initStore(),
+  store,
   computed: {
     // Method 1: use classic approach
     // dishes() {

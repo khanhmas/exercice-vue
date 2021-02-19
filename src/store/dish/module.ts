@@ -5,9 +5,9 @@ import mutations from './mutations.ts';
 export default {
   namespaced: true,
   state: {
-    dishes: []
+    dishes: [],
   },
   mutations,
   actions,
-  getters
+  getters,
 };

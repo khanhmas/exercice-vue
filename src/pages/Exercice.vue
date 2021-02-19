@@ -24,7 +24,7 @@ import CONF from "../config/app.config.ts";
 export default {
   data() {
     return {
-      showFormDishe: false
+      showFormDishe: false,
     };
   },
   components: {
@@ -43,6 +43,9 @@ export default {
       dishes: "task/getDishes"
     })
   },
+  watch: {
+    computedGlobalStateVariable: 'setLocalState'
+  },
   methods: {
     onRefresh(done) {
       setTimeout(() => {
@@ -50,6 +53,9 @@ export default {
         console.log('refreshed')
         done();
       }, 1000);
+    },
+    setLocalState(value) {
+      this.di = Object.assign({}, value);
     }
   },
   created() {
@@ -57,8 +63,9 @@ export default {
     addAllItems(CONF.LOCAL_STORAGE_KEY, dishes);
 
     const items = getAllItems(CONF.LOCAL_STORAGE_KEY);
-    if (items !== null)
-      this.$store.dispatch("task/addAll", getAllItems(CONF.LOCAL_STORAGE_KEY));
+    if (items !== null) {
+      this.$store.dispatch("task/addAll", items);
+    }
   }
 };
 </script>

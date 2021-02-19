@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import dishModule from './dish/module.ts';
 
 // Importer votre module ici et l'ajouter au Store (ligne 19)
+import dishModule from './dish/module.ts';
 
 Vue.use(Vuex);
 

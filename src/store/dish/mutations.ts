@@ -10,7 +10,6 @@ export const ADD = 'add';
 export const UPDATE = 'update';
 export const DELETE = 'delete';
 
-
 export default {
     [ADD_ALL] (state, payload) {
         state.dishes = payload;

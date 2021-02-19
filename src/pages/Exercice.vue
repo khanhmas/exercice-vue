@@ -43,20 +43,14 @@ export default {
       dishes: "task/getDishes"
     })
   },
-  watch: {
-    computedGlobalStateVariable: 'setLocalState'
-  },
   methods: {
     onRefresh(done) {
       setTimeout(() => {
         // Do the refresh stuff here
-        console.log('refreshed')
+        console.log('refreshed');
         done();
       }, 1000);
     },
-    setLocalState(value) {
-      this.di = Object.assign({}, value);
-    }
   },
   created() {
     // Only add default items if the LOCAL_STORAGE_KEY is not defined in localStorage

@@ -42,10 +42,7 @@
           label="URL de l'image"
           class="col"
           :rules="[
-            val =>
-              val === '' ||
-              isValidImgUrl(val) === true ||
-              'Image url n\'est pas valid'
+            checkImgUrl()
           ]"
         />
         <q-img
@@ -111,8 +108,11 @@ export default {
         );
       }
     },
+    checkImgUrl() {
+      return val => val === '' || CONF.IMAGE_URL_REGEX.test(val) || 'Image url n\'est pas valid';
+    },
     isValidImgUrl(val) {
-      return CONF.IMAGE_URL_REGEX.test(val);
+      return val === '' || CONF.IMAGE_URL_REGEX.test(val);
     },
     isValid() {
       /**
@@ -139,7 +139,7 @@ export default {
           }
         }
       }
-      return res;
+      return res && this.isValidImgUrl(this.dishe.image);
     }
   }
 };

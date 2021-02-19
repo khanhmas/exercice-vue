@@ -9,9 +9,13 @@
         <q-input
           filled
           v-model="dishe.name"
-          label="Nom (Burger)"
+          label="Nom"
           class="col"
-          :rules="[val => val.length <= 20 || 'Please use maximum 20 characters']"
+          :rules="[
+            val =>
+              val.length <= MAX_NAME ||
+              `Obligatoire avec un maximum de ${MAX_NAME} caractères.`
+          ]"
         />
       </div>
 
@@ -22,7 +26,12 @@
           label="Description"
           type="textarea"
           class="col"
-          :rules="[val => val.length <= 135 || 'Please use maximum 135 characters']"
+          :rules="[
+            val =>
+              val === '' ||
+              val.length <= MAX_DESCRIPTION ||
+              `Obligatoire avec un maximum de ${MAX_DESCRIPTION} caractères.`
+          ]"
         />
       </div>
 
@@ -32,6 +41,12 @@
           v-model="dishe.image"
           label="URL de l'image"
           class="col"
+          :rules="[
+            val =>
+              val === '' ||
+              isValidImgUrl(val) === true ||
+              'Image url n\'est pas valid'
+          ]"
         />
         <q-img
           :src="dishe.image ? dishe.image : 'statics/image-placeholder.png'"
@@ -58,8 +73,10 @@
 </template>
 
 <script>
+import CONF from "../config/app.config.ts";
+
 export default {
-  props: ["action"],
+  props: ["action", "dishInstance"],
   data() {
     return {
       dishe: {
@@ -67,12 +84,43 @@ export default {
         description: "",
         note: 1,
         image: ""
-      }
+      },
+      MAX_NAME: CONF.MAX_NAME,
+      MAX_DESCRIPTION: CONF.MAX_DESCRIPTION
     };
+  },
+  created() {
+    if (this.dishInstance != null) {
+      // different from null and undefined
+      this.dishe = { ...this.dishInstance };
+    }
   },
   methods: {
     onSave() {
-      console.log('saving')
+      if (this.isValid() === true) {
+        const action = "task/" + this.action;
+        this.$store.dispatch(action, this.dishe);
+      } else {
+        alert(
+          `Le nom de l'article doit contenir ${
+            this.MAX_NAME
+          } caractères maximum et la description doit contenir ${
+            this.MAX_DESCRIPTION
+          } caractères maximum `
+        );
+      }
+    },
+    isValidImgUrl(val) {
+      return /(https?:\/\/.*\.(?:png|jpg))/i.test(val);
+    },
+    isValid() {
+      return (
+        (this.dishe.name !== "" &&
+          this.dishe.name.length <= this.MAX_NAME &&
+          this.dishe.description === "") ||
+        (this.dishe.description !== "" &&
+          this.dishe.description.length <= this.MAX_DESCRIPTION)
+      );
     }
   }
 };

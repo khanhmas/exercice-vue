@@ -1,11 +1,15 @@
 <template>
   <q-card class="card">
-    <q-img :src="dishe.image" basic contain>
+    <q-img v-if="dishe.image !== ''" :src="dishe.image" basic contain>
       <div class="absolute-bottom text-h6">
         {{ dishe.name }}
       </div>
     </q-img>
-
+    <q-img v-else :src="'statics/image-placeholder.png'" basic contain>
+      <div class="absolute-bottom text-h6">
+        {{ dishe.name }}
+      </div>
+    </q-img>
     <q-card-section>
       <q-rating
         :value="dishe.note"
@@ -17,7 +21,8 @@
     </q-card-section>
 
     <q-card-section>
-      {{ dishe.description }}
+      <span v-if="dishe.description !== ''">{{ dishe.description }}</span>
+      <em v-else>Aucune description fournie</em>
     </q-card-section>
 
     <q-card-actions class="absolute-bottom" align="right">
@@ -28,7 +33,7 @@
     </q-card-actions>
 
     <q-dialog v-model="showFormDishe">
-      <form-dishe action="modifier" />
+      <form-dishe action="update" :dishInstance="dishe" />
     </q-dialog>
   </q-card>
 </template>
@@ -38,7 +43,7 @@ export default {
   props: ["dishe"],
   data() {
     return {
-      showFormDishe: false
+      showFormDishe: false,
     };
   },
   components: {
@@ -46,7 +51,7 @@ export default {
   },
   methods: {
     onDelete() {
-      const deleteConfirm = confirm(`Do you want to delete the item ${this.dishe.nom}`);
+      const deleteConfirm = confirm(`Voulez-vous supprimer l'article "${this.dishe.name}" ?`);
       if (deleteConfirm === true)
         this.$store.dispatch('task/delete', {
           id: this.dishe.id

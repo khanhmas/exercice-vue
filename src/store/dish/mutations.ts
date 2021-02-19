@@ -17,7 +17,7 @@ export default {
     [ADD] (state, payload) {
         const item = {
             ...payload,
-            id: state.dishes.length + 1,
+            id: state.dishes[state.dishes.length - 1].id + 1,
         };
         state.dishes.push(item);
         addItem(CONF.LOCAL_STORAGE_KEY, item);

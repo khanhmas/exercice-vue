@@ -15,8 +15,12 @@ export default {
         state.dishes = payload;
     },
     [ADD] (state, payload) {
-        state.dishes.push(payload);
-        addItem(CONF.LOCAL_STORAGE_KEY, payload);
+        const item = {
+            ...payload,
+            id: state.dishes.length + 1,
+        };
+        state.dishes.push(item);
+        addItem(CONF.LOCAL_STORAGE_KEY, item);
     },
     [UPDATE] (state, payload) {
         const index = getIndex(state.dishes, payload.id);
@@ -27,10 +31,8 @@ export default {
         updateItem(CONF.LOCAL_STORAGE_KEY, dish);
     },
     [DELETE] (state, payload) {
-        const cloneDishes = [...state.dishes];
-        const index = getIndex(cloneDishes, payload.id);
+        const index = getIndex(state.dishes, payload.id);
         deleteItem(CONF.LOCAL_STORAGE_KEY, index);
-        cloneDishes.splice(index, 1);
-        state.dishes = [...cloneDishes];
+        state.dishes.splice(index, 1);
     }
 }

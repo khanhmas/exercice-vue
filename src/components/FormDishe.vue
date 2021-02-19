@@ -67,7 +67,8 @@
 
     <q-card-actions align="right">
       <q-btn label="Annuler" color="grey" v-close-popup />
-      <q-btn label="Sauver" color="primary" @click="onSave()" v-close-popup />
+      <q-btn v-if="isValid() === true" label="Sauver" color="primary" @click="onSave()"  v-close-popup />
+      <q-btn v-else disable label="Sauver" color="primary" v-close-popup />
     </q-card-actions>
   </q-card>
 </template>
@@ -111,16 +112,32 @@ export default {
       }
     },
     isValidImgUrl(val) {
-      return /(https?:\/\/.*\.(?:png|jpg))/i.test(val);
+      return CONF.IMAGE_URL_REGEX.test(val);
     },
     isValid() {
-      return (
-        (this.dishe.name !== "" &&
-          this.dishe.name.length <= this.MAX_NAME &&
-          this.dishe.description === "") ||
-        (this.dishe.description !== "" &&
-          this.dishe.description.length <= this.MAX_DESCRIPTION)
-      );
+      /**
+       * Idea: Make the validator configurable just by adding new fields into the config
+       */
+      let res = true;
+      for (const validator of CONF.VALIDATORS) {
+        const criterias = validator.criterias;
+        const field = validator.field;
+        for (const criteria of criterias) {
+          if (criteria.value != null) {
+            switch (criteria.name) {
+              case 'required':
+                if (criteria.value === true)
+                  res = res && this.dishe[field] !== '';
+                break;
+              case 'maxLength':
+                if (typeof criteria.value === 'number')
+                  res = res && this.dishe[field].length <= criteria.value;
+                break;
+            }
+          }
+        }
+      }
+      return res;
     }
   }
 };

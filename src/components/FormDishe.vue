@@ -67,8 +67,8 @@
 
     <q-card-actions align="right">
       <q-btn label="Annuler" color="grey" v-close-popup />
-      <q-btn v-if="isValid() === true" label="Sauver" color="primary" @click="onSave()"  v-close-popup />
-      <q-btn v-else disable label="Sauver" color="primary" v-close-popup />
+      <q-btn v-if="isValid() === true" label="Sauver" color="primary" @click="onSave()" v-close-popup />
+      <q-btn v-else disable label="Sauver" color="grey" v-close-popup />
     </q-card-actions>
   </q-card>
 </template>
@@ -132,6 +132,8 @@ export default {
               case 'maxLength':
                 if (typeof criteria.value === 'number')
                   res = res && this.dishe[field].length <= criteria.value;
+                break;
+              default:
                 break;
             }
           }
